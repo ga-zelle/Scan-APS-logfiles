@@ -1,13 +1,11 @@
 # Scan-APS-logfiles
 various tools for extracting information out of the AAPS logfiles
 
-Those tools running on the phone need a python environment:
-   * From the playstore download and install qpthon3 („QPython 3L – Python for Android“ by QpythonLab). 
-   * This should create a folder „qpython“ at the top level
-   
-   Go to its subfolder „scripts3“
-   
-   Download the python programmes to this subfolder
+Those tools running on the phone need a python environment, e.g.
+   - From the playstore download and install qpthon3 („QPython 3L – Python for Android“ by QpythonLab). 
+   - This should create a folder „qpython“ at the top level
+   - Go to its subfolder „scripts3“
+   - Download the python programmes to this subfolder
  
  
  **Tabulate_APS_results.py** 
