@@ -7,6 +7,7 @@ Those tools running on the phone need a python environment, e.g.
    - Go to its subfolder „scripts3“
    - Download the python programmes to this subfolder
  
+ On Windows it uses python 3.7 upwards.
  
  **Tabulate_APS_results.py** 
   
