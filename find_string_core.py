@@ -1,10 +1,11 @@
 #
 """
 	Scan APS logfile and extract relevant items
-    to compare original SMB analysis vs. the determine_basal.py
 """
 #	Version INIT		Started	08.Dec.2019			Author	Gerhard Zellermann
 #   - adapted from scanAPSlog.py
+#   Version 3           Status  30.Nov.2021
+#   - convert characters fom search text to '_' if not allowed in path name
 
 import sys
 import os
@@ -28,7 +29,7 @@ def scanLogfile(fn, entries):
     global loopCount
     
     if filecount == 0 :                         # initalize file loop
-        fn_base =      fn + '.' + varLabel
+        fn_base =      fn + '.' + var_Name      # mod V3
         log     = open(fn_base + '.found', 'w')
     #log.write('AAPS logfile scan for string"'+varLabel+'"n created on ' + formatdate(localtime=True) + '\n')
     log.write('FILE='+fn + '\n')
@@ -68,7 +69,7 @@ def parameters_known(myseek, arg2, variantFile, startLabel, stoppLabel, entries)
     #   start of top level analysis
     
     global fn
-    global varLabel
+    global varLabel, var_Name                       # mod V3
     global fn_first
 
     global  filecount, loopCount
@@ -88,12 +89,16 @@ def parameters_known(myseek, arg2, variantFile, startLabel, stoppLabel, entries)
     oldloopCount= 0
         
     myfile = ''
-    #arg2 = arg2.replace('_', ' ')                   # get rid of the UNDERSCOREs
+    #arg2 = arg2.replace('_', ' ')                  # get rid of the UNDERSCOREs
     #doit = arg2.split('/')
     varFile = variantFile                           # on Windows
     varLabel = os.path.basename(varFile)            # do not overwrite the calling arg value
     if varLabel[len(varLabel)-4:] == '.dat' :       # drop the tail coming from DOS type ahead
         varLabel = varLabel[:-4]
+    print('initially:', varLabel)
+    var_Name = varLabel.replace('"', '_')           # mod V3
+    var_Name = var_Name.replace(':', '_')           # mod V3
+    print('finally  :', varLabel)
     
     logListe = glob.glob(myseek+myfile, recursive=False)
     if arg2[:7] == 'Android' :
