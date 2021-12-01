@@ -98,6 +98,10 @@ def parameters_known(myseek, arg2, variantFile, startLabel, stoppLabel, entries)
     print('initially:', varLabel)
     var_Name = varLabel.replace('"', '_')           # mod V3
     var_Name = var_Name.replace(':', '_')           # mod V3
+    var_Name = var_Name.replace('{', '_')           # mod V3
+    var_Name = var_Name.replace('}', '_')           # mod V3
+    var_Name = var_Name.replace('[', '_')           # mod V3
+    var_Name = var_Name.replace(']', '_')           # mod V3
     print('finally  :', varLabel)
     
     logListe = glob.glob(myseek+myfile, recursive=False)
