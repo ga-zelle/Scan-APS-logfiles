@@ -66,8 +66,8 @@ set_tty(0,        0,    how_to_print)            # export print settings to main
 
 
 # try whether we are on Android:
-test_dir  = '/storage/emulated/0/Android/data/info.nightscout.androidaps/files/'
-test_dir  = '/storage/emulated/0/Android/data/info.nightscout.androidaps/'          # always find it even when starting new logfile
+test_dir  = '/storage/emulated/0/AAPS/logs/info.nightscout.androidaps/'
+test_dir  = '/storage/emulated/0/AAPS/logs/info.nightscout.androidaps/'          # always find it even when starting new logfile
 test_file = 'AndroidAPS.log'
 inh = glob.glob(test_dir+'*')
 #print (str(inh))
@@ -76,69 +76,15 @@ if len(inh) > 0:
     import androidhelper
     droid=androidhelper.Android()
     
-    inh = glob.glob(test_dir+'files/*.log')
+    inh = glob.glob(test_dir+'*.log')
     fn = inh[0]
 
     myseek  = fn
-
-    btns = ["Next", "Exit", "Test"]
-    items = ["Dieses Smartphon spricht Deutsch", "This smartphone speaks English"]
-    pick = 0
-    while True:                                                             # how the lady speaks ...
-        default_pick = [pick]
-        pressed_button, selected_items_indexes = mydialog("Pick Language", btns, items, False, default_pick)
-        pick = selected_items_indexes[0]
-        if   pressed_button ==-1:           sys.exit()                      # external BREAK
-        elif pressed_button == 0:           break                           # NEXT
-        elif pressed_button == 1:           sys.exit()                      # EXIT
-        elif pressed_button == 2:           droid.ttsSpeak(items[pick])     # TEST
-    if pick == 0:
-        textSMB = 'Der neue I-S-F Algorithmus schlägt einen extra Bolus vor, nämlich '
-        textUnit= ' Einheiten'
-        both_ansage  = 'Prüf doch Mal die Lage.'
-        carb_ansage0 = 'Du brauchst eventuell Kohlenhydrate,'
-        both_ansage1 = 'und zwar circa'
-        carb_ansage2 = 'Gramm in den nächsten'
-        carb_ansage3 = 'Minuten'
-        Speaker = 'Frau'
-    else:
-        textSMB = 'the new ISF algorithm suggests an extra bolus, namely '
-        textUnit= ' units'
-        both_ansage  = 'Houston, we may have a situation.'
-        carb_ansage0 = 'You may need carbohydrates,'
-        both_ansage1 = 'namely about'
-        carb_ansage2 = 'grams during the next'
-        carb_ansage3 = 'minutes'
-        Speaker = 'Lady'
-        
-    btns = ["Next", "Exit", "Test"]
-    items = ["bg", "target", "as_ratio", "iob", "cob", "range", "slope", "ISF", "insReq", "SMB", "basal"]
-    width = [5,     6,          6,        6,      6,      13,      13,    24,      13,      11,     14]
-    pick  = [0,                                            5,       6,     7,       8,       9,     10]
-    while True:
-        default_pick = pick
-        pressed_button, selected_items_indexes = mydialog("Pick outputs", btns, items, True, default_pick)
-        pick = selected_items_indexes
-        if   pressed_button ==-1:           sys.exit()                      # external BREAK
-        elif selected_items_indexes == []:  sys.exit()                      # all declined
-        elif pressed_button == 0:           break                           # NEXT
-        elif pressed_button == 1:           sys.exit()                      # EXIT
-        elif pressed_button == 2:                                           # TEST
-            cols = 6                                                        # always: time column
-            for i in selected_items_indexes:
-                cols += width[i]                                            # add selected column width
-            droid.ttsSpeak(str(cols))                                       # tell the sum
-
-    arg2 = 'Android' + ''.join(['/'+items[i] for i in selected_items_indexes])       # the feature list what to plot
-    
-    varF = glob.glob(test_dir+'files/*.dat')
-    lstF = []   #[i for i in varF]
-    for varFile in varF:
-        lstF.append(os.path.basename(varFile))      # do not overwrite the calling arg value
-    pressed_button, selected_items_indexes = mydialog("Pick variant file", btns, lstF, False)
-    if pressed_button != 0 or selected_items_indexes == []:
-        sys.exit()    
-    varFile = test_dir + 'files/' + ''.join([lstF[i] for i in selected_items_indexes])
+    arg2 = 'Android/'+'ebbes'                       # the feature list what to find  #
+    defaultStr = 'RhinoException'
+    varFile = input('Enter string to search for (' + str(defaultStr) + ') ? ')
+    if varFile == '':           varFile = defaultStr
+    #varFile = 'dura_ISF adaptation'
 
     t_stoppLabel = '2099-00-00T00:00:00Z'           # defaults to end of centuary, i.e. open end
     t_startLabel = '2000-00-00T00:00:00Z'           # defaults to start of centuary, i.e. open start
@@ -167,16 +113,9 @@ else:                                                                           
 wdhl = 'yes'
 entries = {}
 lastTime = '0'
-while wdhl[0]=='y':                                                                 # use CANCEL to stop/exit
-    # All command line arguments known, go for main process
-    parameters_known(myseek, arg2, varFile, t_startLabel, t_stoppLabel, entries)
+parameters_known(myseek, arg2, varFile, t_startLabel, t_stoppLabel, entries)
 
-    #print('returned vary_ISF_batch:', CarbReqGram, ' minutes:',  CarbReqTime)
-    if IsAndroid:
-        howLong = waitNextLoop(thisTime, varFile[len(test_dir)+6:-4])
-        lastTime = thisTime        
-        time.sleep(howLong)
-    else:   break                                                                   # on Windows run only once
 
+if IsAndroid:       os._exit(os.EX_OK)              # terminate this script OK, but keep others alive
 sys.exit()
 

@@ -56,6 +56,7 @@ def scanLogfile(fn, entries):
             #print(zeile)
             if zeile.find(varLabel) >=0:  
                 log.write('row'+f'{str(lcount):>6} '+zeile+'\n')
+                print('row'+f'{str(lcount):>6} '+zeile)
                 loopCount += 1
 
         except UnicodeDecodeError:              # needed because "for zeile in lf" does not work with AAPS 2.5 containing non-printing ASCII codes
