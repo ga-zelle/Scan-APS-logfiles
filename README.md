@@ -9,6 +9,8 @@ Those tools running on the phone need a python environment, e.g.
  
  On Windows it uses python 3.7 upwards.
  
+ 
+ 
  **Tabulate_APS_results.py** 
   
   Lists key results and parameters per loop execution
@@ -17,12 +19,18 @@ Those tools running on the phone need a python environment, e.g.
   
   Can run an Windows, too. Needs editing the source for the name of the logfile copied to the Windows system
 
+
+
 **find_string_batch.py**
 
-  search a group of logfiles for occurence of a search string
-  
-  usage:
-  ```
+  requires *find_string_core.py* to be installed in the same folder    
+ 
+  usage on Windows: search a group of logfiles for occurence of a search string
+  ``` 
   find_string_batch.py  <wild-card-AAPS-logfile(s)>  <dummy-text>  "search string including BLANKS"
   ```
-  requires *find_string_core.py* to be installed in the same folder
+
+  usage on Android12: search active logfile for occurence of a search string
+  ``` 
+  find_string_batch.py 
+  >"search string including BLANKS" will be prompted for
