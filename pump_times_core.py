@@ -7,8 +7,7 @@
 #   Version 3           Status  30.Nov.2021
 #   - convert characters fom search text to '_' if not allowed in path name
 
-import sys
-import os
+import sys, os, re
 import glob
 from email.utils import formatdate
 import datetime
@@ -383,11 +382,11 @@ def scanLogfile(fn, entries):
                 elif  zeile.find('READSTATUS') >0 :                                         readStatus(zeile)
                 elif  zeile.find('SET PROFILE') >0 :                                        pass
                 else:   print('anderes Kommando in zeile', str(lcount))
-            elif zeile.find('D/PUMPQUEUE: [QueueThread.run():114]: connect') >0:            triggerConnect(zeile) 
-            elif zeile.find('D/PUMPQUEUE: [QueueThread.run():121]: connection time ') >0:   finishConnect(zeile)    # older ruffy
-            elif zeile.find('D/PUMPQUEUE: [QueueThread.run():123]: connection time ') >0:   finishConnect(zeile)
-            elif zeile.find('D/PUMPQUEUE: [QueueThread.run():161]: thread end') > 0:        threadEnd(zeile)        # older ruffy
-            elif zeile.find('D/PUMPQUEUE: [QueueThread.run():163]: thread end') > 0:        threadEnd(zeile)
+            elif re.search(r"D/PUMPQUEUE: \[QueueThread.run\(\):[0-9]*\]: connect", zeile) :                    triggerConnect(zeile) 
+            elif re.search(r"D/PUMPQUEUE: \[QueueThread.run\(\):[0-9]*\]: connection time ", zeile):            finishConnect(zeile)    # older ruffy
+            elif re.search(r"D/PUMPQUEUE: \[QueueWorker.doWorkAndLog\(\):[0-9]*\]: connection time ", zeile):   finishConnect(zeile)    # AAPS3320_comboV2
+            elif re.search(r"D/PUMPQUEUE: \[QueueThread.run\(\):[0-9]*\]: thread end", zeile):                  threadEnd(zeile)        # older ruffy
+            elif re.search(r"D/PUMPQUEUE: \[QueueWorker.doWorkAndLog\(\):[0-9]*\]: thread end", zeile):         threadEnd(zeile)        # AAPS3320_comboV2
 
 
         except UnicodeDecodeError:              # needed because "for zeile in lf" does not work with AAPS 2.5 containing non-printing ASCII codes
